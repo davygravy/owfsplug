@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Starts temploggerd.
+#
+
+start() {
+	echo -n "Starting temploggerd: "
+	/usr/bin/temploggerd  -c /etc/temploggerd.conf
+	echo "OK"
+}
+stop() {
+	echo -n "Stopping temploggerd: "
+	killall temploggerd
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+

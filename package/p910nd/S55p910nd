@@ -1,0 +1,71 @@
+#!/bin/sh
+#
+#   /etc/init.d/[S55]p910nd
+#   initscript to start p910nd printer daemon, with match pid-files and process-names
+
+
+CONFIG=/etc/p910nd.conf
+RUN_D=/var/run
+P910ND=/usr/sbin/p910nd
+LOCK_D=/var/lock
+
+#  description of config line format for /etc/p910nd.conf
+#  each configuration line must have form 
+#  N  [-b]  -f <printer_device> , where N is the port number [0|1|2], -b enables bidirectional traffic, 
+#                                 and -f specifies a printer device
+# 
+#  examples:
+#  0 -b -f /dev/usb/lp0   
+# (listen on port 9100, with bidirectional traffic, use /dev/usb/lp0, pid-file p9100d.pid)
+#
+#  2  -f /dev/usb/lp3     
+# (listen on port 9102, use /dev/usb/lp3, pid-file p9102d.pid)
+
+
+
+# check if /var/lock/subsys exists, create it if not
+[ ! -d $LOCK_D/subsys ] && mkdir -p $LOCK_D/subsys
+
+do_start() {
+	[ -f $CONFIG ] && ( while read PORT OPTIONS; do
+   		case "$PORT" in
+    			""|\#*)
+     			continue;
+   		esac
+		P910XD_PID="p910"$PORT"d.pid"	# create the correct pid-filename, e.g. p9102d.pid
+		P910ND_ARGS=" $OPTIONS $PORT"
+		start-stop-daemon -m -p  $RUN_D/$P910XD_PID -S -x $P910ND -- $P910ND_ARGS
+		echo "starting p910nd with options $OPTIONS on port $PORT with pid-file $P910XD_PID"
+   		if [ $? -ne 0 ]; then
+    			exit 1
+		fi
+  	done
+	) < $CONFIG
+ 	exit 0
+}
+
+do_stop() {
+        for PID_F in $RUN_D/p910?d.pid; do
+		rm $PID_F && echo "stopping p910nd instance with pid-file" $PID_F
+                start-stop-daemon -q -K -p $PID_F 
+        done
+}
+
+case $1 in
+	start)
+ 	 	do_start
+  		;;
+  	stop)
+  		do_stop
+  		;;
+  	restart)
+        	do_stop
+		sleep 1
+        	do_start
+        	;;
+  	*)
+        	echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

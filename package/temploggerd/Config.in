@@ -1,0 +1,11 @@
+config BR2_PACKAGE_TEMPLOGGERD
+        bool "temploggerd"
+ 	depends on BR2_PACKAGE_RRDTOOL
+	depends on BR2_PACKAGE_OWFS
+        help
+          Temploggerd is a utility which read temperatures and other data
+	  from 1-wire sensors, creates graphs (via rrdtool) and webpages for
+	  viewing them.
+
+          http://owfs.org/
+

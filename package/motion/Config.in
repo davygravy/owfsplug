@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MOTION
+        bool "motion"
+	depends on BR2_PACKAGE_JPEG
+        help
+          Motion is a program that monitors the video signal from cameras,
+	  detect motion, capture images, etc.
+
+          http://www.lavrsen.dk/foswiki/bin/view/Motion
+

@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Starts lighttpd.
+#
+# use if needed by your webcam, especially older v4l webcams (not v4l2)...
+export LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so
+
+
+start() {
+	echo -n "Starting lighttpd: "
+	start-stop-daemon -S -q -p /var/run/lighttpd.pid --exec /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf
+	echo "OK"
+}
+stop() {
+	echo -n "Stopping lighttpd: "
+	start-stop-daemon -K -q -p /var/run/lighttpd.pid
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

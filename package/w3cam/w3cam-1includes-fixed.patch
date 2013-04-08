@@ -1,0 +1,54 @@
+--- w3cam-0.7.2.orig/w3cam.c
++++ w3cam-0.7.2/w3cam.c
+@@ -36,7 +36,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <linux/types.h>
+-#include <linux/videodev.h>
++#include <libv4l1-videodev.h>
+ #ifdef HAVE_LIBZ
+ #include <zlib.h>
+ #endif
+@@ -47,7 +47,7 @@
+ #include <jpeglib.h>
+ #endif
+ #ifdef HAVE_LIBTTF
+-#include <freetype.h>
++#include <freetype/freetype.h>
+ #endif
+ #include "w3cam.h"
+ #include "cgi.h"
+--- w3cam-0.7.2.orig/vidcat.c
++++ w3cam-0.7.2/vidcat.c
+@@ -30,7 +30,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <linux/types.h>
+-#include <linux/videodev.h>
++#include <libv4l1-videodev.h>
+ #ifdef HAVE_LIBZ
+ #include <zlib.h>
+ #endif
+--- w3cam-0.7.2.orig/v4l.c
++++ w3cam-0.7.2/v4l.c
+@@ -26,7 +26,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <linux/types.h>
+-#include <linux/videodev.h>
++#include <libv4l1-videodev.h>
+ #include "v4l.h"
+ 
+ #define min(a,b) ((a) < (b) ? (a) : (b))
+--- w3cam-0.7.2.orig/w3camd/w3v4l.c
++++ w3cam-0.7.2/w3camd/w3v4l.c
+@@ -28,7 +28,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <linux/types.h>
+-#include <linux/videodev.h>
++#include <libv4l1-videodev.h>
+ #include "w3v4l.h"
+ 
+ /*
+

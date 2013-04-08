@@ -1,0 +1,63 @@
+#!/bin/sh
+#  /usr/local/bin/firstboot
+#  ... this script should only be called from  /etc/init.d/S99firstboot
+
+mount -o remount,rw /
+
+
+
+
+
+
+
+###  make an identifying banner available for both serial and network logins...
+sed 's/#Banner none/Banner \/etc\/issue.net/g' /etc/sshd_config > /etc/sshd_config.temp; mv /etc/sshd_config.temp /etc/sshd_config
+ln -sf /etc/issue /etc/issue.net
+/etc/init.d/S50sshd restart
+
+
+
+
+### fix lighttpd's startup script
+mv /etc/lighttpd/lighttpd.conf  /etc/lighttpd/lighttpd.conf-original
+mv /etc/lighttpd/lighttpd.conf-templogger-quickstart /etc/lighttpd/lighttpd.conf
+./etc/init.d/S50lighttpd restart
+
+
+
+echo "= stopping and disabling portmap and nfds for now ..."
+./etc/init.d/S13portmap stop
+./etc/init.d/S60nfs stop
+
+mv /etc/init.d/S13portmap  /etc/init.d/disabled-S13portmap
+mv /etc/init.d/S60nfs  /etc/init.d/disabled-S60nfs
+
+echo
+echo
+echo
+
+
+
+echo
+echo "= finishing up the default installation..."
+echo "= disabling the init script that called this script..."
+mv /etc/init.d/S99firstboot  /etc/init.d/disabled-S99firstboot
+
+
+
+
+
+sync
+sleep 1
+echo
+echo "= and remounting the rootfs as read-only."
+mount -o ro,remount /
+echo "= *** If you need to edit something in the rootfs, remount it as read-write :"
+echo "=     mount -o rw,remount /"
+echo "= *** make whatever changes you want to using nano & the like, +++but+++"
+echo "= *** remember to remount it as readonly when you are done..."
+echo "=     mount -o ro,remount /"
+echo 
+echo
+echo
+

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_W3CAM
+        bool "w3cam"
+ 	depends on BR2_PACKAGE_LIBV4L
+	depends on BR2_PACKAGE_JPEG
+        help
+          W3CAM is a simple video4linux cgi utility that serves
+	  webcam images through the http server of your choice.
+
+          http://mpx.freeshell.net/
+

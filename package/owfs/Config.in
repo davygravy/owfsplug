@@ -1,0 +1,10 @@
+config BR2_PACKAGE_OWFS
+        bool "owfs"
+        select BR2_PACKAGE_LIBFUSE
+        help
+          OWFS is an easy way to use the powerful 1-wire system of
+          Dallas/Maxim.
+
+          http://owfs.org/
+
+

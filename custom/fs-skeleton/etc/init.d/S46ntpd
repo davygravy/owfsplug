@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# Start the ntpd ....
+#
+
+case "$1" in
+  start)
+ 	echo "Starting ntpd..."
+	echo "...waiting 10 seconds for network to settle"
+	sleep 10
+	/usr/sbin/ntpd -p pool.ntp.org
+	;;
+  stop)
+	echo -n "Stopping ntpd..."
+	killall ntpd
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+

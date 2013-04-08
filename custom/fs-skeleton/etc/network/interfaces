@@ -1,0 +1,5 @@
+auto lo
+iface lo inet loopback
+iface eth0 inet dhcp
+  up echo default-on > /sys/class/leds/dockstar\:green\:health/trigger
+  down echo none > /sys/class/leds/dockstar\:green\:health/trigger

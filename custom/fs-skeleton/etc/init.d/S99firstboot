@@ -1,0 +1,15 @@
+#!/bin/sh
+#  /etc/init.d/S99firstboot
+#  this script calls /usr/local/bin/firstboot
+#  and directs all output to both the screen and to a log file /var/log/firstboot.log
+#  it will only be executed on the very first boot of the rootfs, since the firstboot script 
+#  will rename it from S99firstboot  to  disabled-S99firstboot
+
+/usr/local/bin/firstboot 2>&1 | tee /var/log/firstboot.log
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Starts owfs.
+#
+
+start() {
+	echo -n "Starting owfs "
+	mkdir /tmp/owfsmnt
+	/usr/bin/owfs -u -m /tmp/owfsmnt/
+	echo "OK"
+}
+stop() {
+	echo -n "Stopping owfs: "
+	killall owfs
+	umount /tmp/owfsmnt/
+	rm -r /tmp/owfsmnt
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+
+

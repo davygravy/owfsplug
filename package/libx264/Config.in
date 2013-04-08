@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBX264
+	bool "libx264"
+	help
+	  x264 video decoder library
+
+	  http://www.videolan.org/developers/x264.html
+

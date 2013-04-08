@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Starts w3camd
+#
+
+
+#if using some sort of v4l-era webcam, probably enable this export:
+export LD_PRELOAD='/usr/lib/libv4l/v4l1compat.so'
+
+ln -s /dev/video0 /dev/video
+#load needed kernel modules for your webcam
+while read mod; do modprobe $mod ; done < /etc/w3cam-modules
+
+
+start() {
+        echo -n "Starting w3camd: "
+        cp /usr/lib/cgi-bin/w3cam.cgi /tmp/www/cgi-bin/w3cam.cgi
+        cp /usr/lib/cgi-bin/w3cam.cgi.scf /tmp/www/cgi-bin/w3cam.cgi.scf
+        /usr/sbin/w3camd -h localhost -d /dev/video0  >> /tmp/w3camd.log &
+        echo "OK"
+}
+stop() {
+        echo -n "Stopping w3camd: "
+        killall w3camd
+        rm /tmp/www/cgi-bin/w3cam.cgi
+        rm /tmp/www/cgi-bin/w3cam.cgi.scf
+        echo "OK"
+}
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+
