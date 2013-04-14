@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# Starts motion.
+#
+
+
+start() {
+        while read mod; do modprobe $mod ; done < /etc/motion-webcam-modules
+        if [ ! -c /dev/video0 ]; then mknod /dev/video0 c 81 0; fi
+        if [ ! -h /tmp/www/images ] ; then ln -s /mnt /tmp/www/images; fi
+        echo -n "Starting motion: "
+        /usr/bin/motion  -c /etc/motion.conf
+        echo "OK"
+}
+
+stop() {
+        echo -n "Stopping motion: "
+        killall motion
+        echo "OK"
+}
+
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+
+
+
