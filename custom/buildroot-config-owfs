@@ -1,6 +1,6 @@
 #
 # Automatically generated make config: don't edit
-# Buildroot 2012.08 Configuration
+# Buildroot 2012.08-g27c1c06 Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_arm=y
@@ -123,7 +123,7 @@ BR2_UCLIBC_VERSION_0_9_32=y
 # BR2_UCLIBC_VERSION_0_9_33 is not set
 # BR2_UCLIBC_VERSION_SNAPSHOT is not set
 BR2_UCLIBC_VERSION_STRING="0.9.32.1"
-BR2_UCLIBC_CONFIG="/home/davygravy/RescueV3/buildroot-2012.08-rc3-WinPlug/custom/uClibc-0.9.32.1-NPTL"
+BR2_UCLIBC_CONFIG="custom/uClibc-0.9.32.1-NPTL"
 # BR2_PTHREAD_DEBUG is not set
 # BR2_UCLIBC_INSTALL_TEST_SUITE is not set
 
@@ -331,6 +331,7 @@ BR2_PACKAGE_LIBINTL=y
 #
 # Graphic applications
 #
+BR2_PACKAGE_MOTION=y
 BR2_PACKAGE_RRDTOOL=y
 
 #
@@ -680,6 +681,7 @@ BR2_PACKAGE_LIBV4L_V4L2_DBG=y
 # BR2_PACKAGE_LIBTHEORA is not set
 # BR2_PACKAGE_LIVE555 is not set
 # BR2_PACKAGE_MEDIASTREAMER is not set
+BR2_PACKAGE_LIBX264=y
 
 #
 # Networking
@@ -1053,10 +1055,10 @@ BR2_LINUX_KERNEL_CUSTOM_VERSION=y
 # BR2_LINUX_KERNEL_CUSTOM_GIT is not set
 BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="3.3.2"
 BR2_LINUX_KERNEL_VERSION="3.3.2"
-BR2_LINUX_KERNEL_PATCH="/home/davygravy/RescueV3/buildroot-2012.08-owfs/custom/linux-3.3.2-wider.patch"
+BR2_LINUX_KERNEL_PATCH="custom/linux-3.3.2-wider.patch"
 # BR2_LINUX_KERNEL_USE_DEFCONFIG is not set
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
-BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="/home/davygravy/RescueV3/buildroot-2012.08-owfs/custom/linux-3.3.2-config-owfs"
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="custom/linux-3.3.2-config-owfs"
 BR2_LINUX_KERNEL_UBOOT_IMAGE=y
 BR2_LINUX_KERNEL_UIMAGE=y
 # BR2_LINUX_KERNEL_APPENDED_UIMAGE is not set
