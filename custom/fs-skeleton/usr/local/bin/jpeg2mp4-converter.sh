@@ -31,11 +31,10 @@ imagedir=/mnt
 movies=/mnt/movies/
 
 
-if [ ! -d $movies ]; then mkdir $movies ; fi
  
 mkdir -p $imagedir/$lyear/$lmonth/$ldate/$lhour/
 
-sleep 120
+#sleep 120
 
 for event in $(ls -r -t $imagedir/$lyear/$lmonth/$ldate/$lhour/ ) ; do
 	x=1;
@@ -44,8 +43,9 @@ for event in $(ls -r -t $imagedir/$lyear/$lmonth/$ldate/$lhour/ ) ; do
         	mv "$f" $imagedir/$lyear/$lmonth/$ldate/$lhour/$event/"$counter".jpg;
         	x=$(($x+1));
 	done
-        ffmpeg -y  -r 4 -i $imagedir/$lyear/$lmonth/$ldate/$lhour/$event/%04d.jpg -vcodec libx264 $movies/$lyear$lmonth$ldate$lhour-$event.mp4
+	ffmpeg -y  -r 4 -i $imagedir/$lyear/$lmonth/$ldate/$lhour/$event/%04d.jpg -vcodec libx264 $movies/$lyear$lmonth$ldate$lhour-$event.mp4
 
 done
+#ffmpeg -y  -r 4 -i $imagedir/$lyear/$lmonth/$ldate/$lhour/$event/%04d.jpg -vcodec libx264 $movies/$lyear$lmonth$ldate$lhour-$event.mp4
 
 
