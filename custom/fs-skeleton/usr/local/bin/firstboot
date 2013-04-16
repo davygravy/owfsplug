@@ -20,7 +20,7 @@ ln -sf /etc/issue /etc/issue.net
 
 ### fix lighttpd's startup script
 mv /etc/lighttpd/lighttpd.conf  /etc/lighttpd/lighttpd.conf-original
-mv /etc/lighttpd/lighttpd.conf-templogger-quickstart /etc/lighttpd/lighttpd.conf
+mv /etc/lighttpd/lighttpd.conf-templogger-and-motion_pix-quickstart /etc/lighttpd/lighttpd.conf
 ./etc/init.d/S50lighttpd restart
 
 
