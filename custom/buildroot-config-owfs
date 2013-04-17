@@ -1,6 +1,6 @@
 #
 # Automatically generated make config: don't edit
-# Buildroot 2012.08-g27c1c06 Configuration
+# Buildroot 2012.08-ga04b76b Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_arm=y
@@ -773,7 +773,7 @@ BR2_PACKAGE_NCURSES=y
 # BR2_PACKAGE_NCURSES_TARGET_FORM is not set
 # BR2_PACKAGE_NCURSES_TARGET_MENU is not set
 # BR2_PACKAGE_NEWT is not set
-BR2_PACKAGE_PCRE=y
+# BR2_PACKAGE_PCRE is not set
 # BR2_PACKAGE_POPT is not set
 # BR2_PACKAGE_READLINE is not set
 # BR2_PACKAGE_SLANG is not set
@@ -894,11 +894,11 @@ BR2_PACKAGE_PORTMAP=y
 # BR2_PACKAGE_QUAGGA is not set
 # BR2_PACKAGE_RADVD is not set
 # BR2_PACKAGE_RSH_REDONE is not set
-# BR2_PACKAGE_RSYNC is not set
+BR2_PACKAGE_RSYNC=y
 # BR2_PACKAGE_RTORRENT is not set
 # BR2_PACKAGE_SAMBA is not set
 # BR2_PACKAGE_SER2NET is not set
-BR2_PACKAGE_SOCAT=y
+# BR2_PACKAGE_SOCAT is not set
 # BR2_PACKAGE_SOCKETCAND is not set
 # BR2_PACKAGE_SPAWN_FCGI is not set
 # BR2_PACKAGE_SQUID is not set
