@@ -5,6 +5,5 @@ mkdir -p /tmp/www/temploggerd/images
 mkdir -p /tmp/www/temploggerd/rrd
 mkdir -p /tmp/www/temploggerd/rrd
 
-cp /usr/lib/cgi-bin/w3cam.cgi* /tmp/www/cgi-bin/
 
 
