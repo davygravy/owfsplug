@@ -1,22 +1,37 @@
+OWFSplug
+=========
 OWFSplug is a fork of my other *plug projects at doozan.forum.com.
 Webpage: http://forum.doozan.com/read.php?4,11039
 
 
 Its 3 goals are to provide these capabilities on nearly any Kirkwood box:
-1.  to record data from 1-Wire sensors and to log it database files
-2.  to record motion detection images from a USB camera, process those images
-3.  to serve both of the above to the web
+1.  a bootable (either USB or NAND-UBIFS) rootfs with all the major Linux utils
+2.  to record data from 1-Wire sensors and to log it database files
+3.  to record motion detection images from a USB camera, process those images
+4.  to serve both #2 and #3 to the web
+5.  to provide a robust, reliable, NAND-based solution for the above
 
 
-Key Packages:
+
+
+KEY PACKAGES:
+==============
 Linux 3.3.2 (Kirkwood kernel and required modules)
 OWFS (1-Wire file system and support packages)
-temploggerd  (automatically generates rrd
+temploggerd, rrdtool (automatically generates rrd database files & generates web pages of data)
 Motion (motion detection software, creates jpeg images)
-ffmpeg (for converting jpeg into timelapse movies)
+ffmpeg, libx264 (for converting jpeg into higher quality, highly compatible mp4 movies)
 lighttpd (webserver)
 avahi-daemon (service advertisement)
 cron (periodic jobs)
+rsync, cifs-utils, nfs-utils (for syncing/offloadind images and data)
+fdisk, gdisk, e2fsprogs (creating partitions and filesystems)
+smartmontools, sdparm  (for monitoring/tweaking your attached USB drive)
+uboot-utils  (for reading/writing uboot parameters)
+msmtp, mailx, openssl  (for sending email messages or attachments via gmail, etc.)
+
+
+
 
 
 Requirements :  all normal required packages for Buildroot
@@ -27,7 +42,7 @@ Tested on : Ubuntu 10.04 LTS, should build fine on any system that supports Buil
 
 
 BUILDING IMAGES:
-===================
+=================
 
 #To get started & set up your directory and source:
 mkdir my-build-directory
@@ -40,9 +55,11 @@ cp custom/buildroot-config-owfs .config
 make
 
 
+
 #To create the actual image files/bins that will be flashed to NAND:
 cd output/images
 
+#...and then paste this entire block of 9 lines below
 cat <<END >rootfs.cfg
 [ubifs]
 mode=ubi
@@ -53,25 +70,117 @@ vol_name=rootfs
 vol_flags=autoresize
 END
 
+# ... and press ENTER
+
 ubinize -o rootfs-mtd2.img -m 2048 -p 128KiB -s 512 rootfs.cfg
 dd if=uImage of=uImage-mtd1.img bs=512K conv=sync
 
 
 
-INSTALLING IMAGES:
-===================
-Identical to process for Jeff Doozan's V2 Rescue image (or AFPDplug, SMBplug)
 
 
 
-SETUP and OPERATION:
-===================
-(hints:)
-consider cronjobs for converting jpegs to mpeg movies
-create a few scripts to load the correct USB camera modules
-read up on 1-Wire sensors and how they interact with OWFS & temploggerd
-attach a USB drive and adjust paths so your data and images are persistent
 
 
 
-April 13, 2013
+USB BOOTING, SETUP and OPERATION:
+==================================
+The tarball contains a bootable USB rootfs,
+with .img files for NAND flashing included.
+
+Copy the rootfs.tar tarball onto an ext2/3 USB drive, partition 1.
+Untar, unmount & remove, insert into your Kirkwood plug device and power up.
+Once booted, it should be visible on your network as the host 
+named "owfsplug.local".  This is easiest if you have an avahi/bonjour-capable
+system.
+
+The root user password is "root".  CHANGE IT PROMPTLY, to the password of 
+your choice.
+
+
+
+
+What works Out-of-the-Box?
+- most UVC Linux-compatible USB cameras
+- webcam/live images via  http://owfsplug.local:81
+
+What needs configuring? 
+- your own 1-Wire sensors and/or hubs
+- other non-UVC USB cameras
+- USB storage, for any jpeg or movie images to be saved to
+- optional: persistent storage of rrdb and 1-Wire data
+- optional: cron jobs to handle operations such as jpeg2mp4 conversion
+- optional: rsync backup jobs
+- optional: nfs or cifs shares
+
+
+
+
+
+
+FLASHING TO NAND:
+==================
+... see http://forum.doozan.com/read.php?4,9422,9422#msg-9422 ...
+
+
+
+TIPS and STARTER IDEAS/HINTS:
+==============================
+0.  FIRST and FOREMOST, if you are making modifications to the UBIFS read-only
+in-NAND filesystem, they you'll have to first make it read-write:
+
+mount -o rw,remount / 
+
+... make your changes via nano or vi & check to see that you've not
+made your device unbootable by doing something silly...
+... and then again make it read-only....
+
+mount -o ro,remount / 
+
+BE CAREFUL! You've been warned.  :)
+
+
+1. If you are going to keep jpegs and/or movies, you will find that they
+quickly occupy quite a lot of space in a short time.  Also, if you want
+__persistent__ 1-Wire data collection and graphs, you'll need to adjust
+and or symlink the paths to /tmp/www so that the important information
+is recorded to a path that represents persistent storage, rather than to
+/tmp.  Note that /tmp/www/images can be the mount point for your USB
+storage device.  You might even want to try /tmp/www as the mount point,
+so that all served images and data are persistent.  In any case, you'll
+need to consider a change to your /etc/fstab and perhaps some of the config
+or initscript files to customize locations to your needs.
+
+
+2. If you decide to consider cronjobs for converting jpegs to mpeg movies, 
+see the scripts at /usr/local/bin/ that convert jpeg to mp4.  mp4 is perhaps
+the most compatible, higher-quality movie format that ffmpeg can generate 
+right now.
+
+
+3. The file /etc/motion-webcam-modules is preset to specify the initscript
+/etc/init.d/S80motion  to automatically load (modprobe) the uvcvideo.ko module
+If you have another type of USB webcam, you will have to adjust this to match.
+A good bet is to "dmesg" and observe the vendor id and device ID of your 
+USB camera, and then Google the two concurrently.  Edit the 
+/etc/motion-webcam-modules to reflect which kernel module(s) are needed for
+your USB camera.
+
+
+4.  For 1-Wire data logging, read up on 1-Wire sensors and how they interact 
+with OWFS & temploggerd.  You can read more about them here:
+
+	http://owfs.org/
+
+	http://home.mag.cx/fox/source-2.6/_README.temploggerd
+
+Both of these programs are,in my opinion, simply brilliant.  There are 
+variations and mods that can be done to record humidity and any virtually any 
+other 1-Wire sensor data that can be digitized.
+
+
+
+
+Good luck and enjoy!
+davygravy
+April 18, 2013
