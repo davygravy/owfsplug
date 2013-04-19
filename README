@@ -4,7 +4,7 @@ OWFSplug is a fork of my other *plug projects at doozan.forum.com.
 Webpage: http://forum.doozan.com/read.php?4,11039
 
 
-Its 3 goals are to provide these capabilities on nearly any Kirkwood box:
+Its main goals are to provide these capabilities on nearly any Kirkwood box:
 1.  a bootable (either USB or NAND-UBIFS) rootfs with all the major Linux utils
 2.  to record data from 1-Wire sensors and to log it database files
 3.  to record motion detection images from a USB camera, process those images
