@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Start crond with config file /etc/crontabs/root ....
+#
+
+start() {
+ 	echo -n "Starting crond: "
+	/usr/sbin/crond -c /etc/crontabs/
+	touch /var/lock/crond
+	echo "OK"
+}	
+
+stop() {
+	echo -n "Stopping crond: "
+        killall	crond 
+	rm -f /var/lock/crond
+	echo "OK" 
+}
+
+restart() {
+	stop
+	start
+}	
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+

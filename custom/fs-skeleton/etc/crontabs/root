@@ -1,0 +1,2 @@
+59 * * * * /usr/local/bin/hourly-paused-jpeg2mp4-converter.sh
+
