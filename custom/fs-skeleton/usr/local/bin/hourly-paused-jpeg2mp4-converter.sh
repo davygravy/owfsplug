@@ -27,8 +27,8 @@ ldate=$(date +%d  )
 lhour=$(date +%H )
 
  
-imagedir=/mnt
-movies=/mnt/movies/
+imagedir=/tmp/www/images
+movies=/tmp/www/movies
 
 
 if [ ! -d $movies ]; then mkdir $movies ; fi

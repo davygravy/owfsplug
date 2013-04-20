@@ -1,9 +1,23 @@
 #!/bin/sh
+#
+#	set up all needed extra dirs for temploggerd and motion
 
+#      needed by lighttpd, and motion and temploggerd
+mkdir -p /tmp/www
+
+#      /tmp/www is the preferred mount point for /dev/sda1, 
+#	consider editting /etc/fstab if  you are going to change this
+mount /dev/sda1 /tmp/www
+
+
+#	for temploggerd  (see /etc/temploggerd.conf for details)
 mkdir -p /tmp/www/cgi-bin
 mkdir -p /tmp/www/temploggerd/images
 mkdir -p /tmp/www/temploggerd/rrd
-mkdir -p /tmp/www/temploggerd/rrd
 
+
+#	for motion  (see /etc/motion.conf for details)
+mkdir -p /tmp/www/images
+mkdir -p /tmp/www/movies
 
 
